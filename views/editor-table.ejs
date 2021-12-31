@@ -1,0 +1,643 @@
+<div class="page1">
+  <div class="Table-container container">
+    <div class="table-wrapper card">
+
+      <div class="text-center my-3">
+        <h2>Editor dashboard</h2>
+      </div>
+      <%- include("partials/messages") %>
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" href="#page1">New / Edited Submissions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#page2">Review</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#page3">Evaluation</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#page4">Accepted Submissions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#page5">Rejected Submissions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#page6">Withdrawn Submissions</a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div id="page1" class="container tab-pane active">
+          <br />
+          <div class="table-responsive">
+          <table class="table table-hover w-100  text-center table1">
+            <thead>
+              <tr>
+                <th id="">Title</th>
+                <th id="">Date</th>
+                <th id="">Authors</th>
+                <th id="">Journal</th>
+                <th id="">Status</th>
+                <th id="">Actions</th>
+                <th style="display: none;" id=""></th>
+                
+              </tr>
+            </thead>
+            <tbody>
+              <% var {newPaper,reviewPaper,judgePaper} = [] %>
+              <% newPaper = paper.filter(obj=>obj.hiddenStatus==='newSubmission'); %>
+              <% reviewPaper = paper.filter(obj=>obj.hiddenStatus==='review' || obj.hiddenStatus==='afterReview'); %>
+              <% judgePaper = paper.filter(obj=>obj.hiddenStatus==='evaluate' || obj.hiddenStatus==='afterEvaluation'); %>
+              <%if (newPaper.length>0){ %> <% newPaper.forEach(function(row){ %>
+              <% 
+              reviewers = reviewers.filter(obj=>obj.reviewerFor=== String(row.journal_id));   
+              %>  
+              <tr>
+                <td><%= row.title %></td>
+                <td><%= row.dateCreated.toString().slice(4,15); %></td>
+                <td><%= row.authors_names %></td>
+                <% var journalName %> <% switch(row.journal_id){ case 1:
+              journalName = "Al-Meezan"; break; case 2: journalName =
+              "Al-Mithqal"; break; case 3: journalName = "Al-Mishkat"; break; }
+              %>
+                <td><%= journalName %></td>
+                <td><%= row.status %></td>
+                <td class="w-25">
+                  <form class="download_form" id="form1<%= row._id %>" action="api/editor/download/<%= row._id %> "
+                    method="GET">
+                    <a href="javascript:;" class="download"
+                      onclick="document.getElementById('form1<%= row._id %>').submit();"><i class="fa fa-download"
+                        data-toggle="tooltip" title="Download"></i></a>
+                  </form>
+
+                  <a href="#send<%= row._id %>id" class="send" data-toggle="modal"><i
+                      class="fa fa-paper-plane text-success" data-toggle="modal" data-target="#Send"
+                      title="Review"></i></a>
+                  <a href="#firstreject<%= row._id %>id" class="delete" data-toggle="modal"><i class="fa fa-times"
+                      data-toggle="modal" title="Reject"></i></a>
+                </td>
+                <td style="display: none;"></td>
+              </tr>
+
+              <div class="modal fade" id="send<%= row._id %>id">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title">Send submission to review</h4>
+                      <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <h5>Select three reviewers</h5>
+                      <form action="/api/editor/toReviewer/<%= row._id %>" method="POST">
+                        <div class="form-group">
+                         <%- include('select3-reviewers')  %> 
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                      <input type="submit" class="btn btn-success" value="Send" />
+
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Close
+                      </button>
+                    </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div class="modal fade" id="firstreject<%= row._id %>id">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title">Reject paper</h4>
+                      <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <h5>Are you sure you want reject the paper?</h5>
+                      <form action="/api/editor/reject/<%= row._id  %> " method="POST">
+                        <div class="form-group">
+                          <label>Tell us the reason for rejecting the paper
+                            (required):</label>
+                           
+                              <textarea
+                                name="message"
+                                class="form-control"
+                                cols="20"
+                                rows="5"
+                                required
+                              ></textarea>
+                            
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                      <input type="submit" class="btn btn-danger" value="Reject"> 
+                      </input>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Close
+                      </button>
+                    </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <% })}else{ %>
+              <tr>
+                <td colspan="6">No Record Found</td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+        </div>
+        <div id="page2" class="container tab-pane fade">
+          <br />
+          <div class="table-responsive">
+          <table class="table table-hover w-100 table2 text-center">
+            <thead>
+              <tr>
+                <th id=" ">Title</th>
+                <th id=" ">Submission Date</th>
+                <th id=" ">Authors</th>
+                <th id=" ">Journal</th>
+                <th id=" ">Accepted</th>
+                <th id=" ">Rejected</th>
+                <th id=" ">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+
+
+
+              <%if (reviewPaper.length>0){ %> <% reviewPaper.forEach(function(row){ %>
+              <%  var rejectedCount = 0 %>
+              <%  var acceptedCount = 0 %>
+              <%
+              row.reviewResult.forEach((item)=>{
+                if(item.result === false){
+                  rejectedCount++;
+                  
+                }else{
+                  acceptedCount++; 
+                }
+              });
+            
+            %>
+            <% judges = judges.filter(obj=>obj.judgeFor=== String(row.journal_id));   %> 
+              <tr>
+                <td><%= row.title %></td>
+                <td><%= row.dateCreated.toString().slice(4,15); %></td>
+                <td><%= row.authors_names %></td>
+                <% var journalName %> <% switch(row.journal_id){ case 1:
+              journalName = "Al-Meezan"; break; case 2: journalName =
+              "Al-Mithqal"; break; case 3: journalName = "Al-Mishkat"; break; }
+              %>
+                <td><%= journalName %></td>
+                <td><%=  acceptedCount %></td>
+                <td><%= rejectedCount%></td>
+                <td class="w-25">
+                  <form class="download_form" id="form1<%= row._id %>" action="api/editor/download/<%= row._id %> "
+                    method="GET">
+                    <a href="javascript:;" class="download"
+                      onclick="document.getElementById('form1<%= row._id %>').submit();"><i class="fa fa-download"
+                        data-toggle="tooltip" title="Download"></i></a>
+                  </form>
+
+                  <a href="#send<%= row._id %>id" class="send" data-toggle="modal"><i
+                      class="fas fa-clipboard-list text-success" data-toggle="modal" data-target="#Send"
+                      title="Evaluate"></i>
+
+
+                  </a>
+                  <a href="#secondReject<%= row._id %>id" class="delete" data-toggle="modal"><i class="fa fa-times"
+                      data-toggle="modal" title="Delete"></i></a>
+                </td>
+              </tr>
+
+              <div class="modal fade" id="send<%= row._id %>id">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title">Send submission to evaluation</h4>
+                      <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <h5>Select two judges</h5>
+                      <form action="/api/editor/toJudge/<%= row._id %>" method="POST">
+                        <div class="form-group">
+                          <%- include("select2-judges")  %> 
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                      <input type="submit" class="btn btn-success" value="Send" />
+
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Close
+                      </button>
+                    </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div class="modal fade" id="secondReject<%= row._id %>id">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title">Reject paper</h4>
+                      <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <h5>Are you sure you want reject the paper?</h5>
+                      <form action="/api/editor/reject/<%= row._id  %> " method="POST">
+                        <div class="form-group">
+                          <label>Tell us the reason for rejecting the paper
+                            (required):
+                          </label>
+                          <textarea
+                                name="message"
+                                class="form-control"
+                                cols="20"
+                                rows="5"
+                                required
+                              ></textarea>
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-danger">
+                        Reject
+                      </button>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Close
+                      </button>
+                    </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <% })}else{ %>
+              <tr>
+                <td colspan="7">No Record Found</td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+          </div>
+        </div>
+        <div id="page3" class="container tab-pane fade">
+          <br />
+          <div class="table-responsive">
+          <table class="table table-hover w-100 table3 text-center">
+            <thead>
+              <tr>
+                <th id=" ">Title</th>
+                <th id=" ">Authors</th>
+                <th id=" ">Journal</th>
+                <th id=" ">Judge 1</th>
+                <th id=" ">Judge 2</th>
+                <th id=" ">Actions</th>
+                <th style="display: none;" id=""></th>
+              </tr>
+            </thead>
+            <tbody>
+              <%if (judgePaper.length>0){ %> <% judgePaper.forEach(function(row){ %>
+            
+                <%  var judge1 = 0 %>
+                <%  var judge2 = 0 %>
+                <%  var judgeName1 = '' %>
+                <%  var judgeName2 = '' %>
+                <%
+                judge1 = row.evaluationResult[0] ? row.evaluationResult[0].result : "N/A";
+                judge2 = row.evaluationResult[1]? row.evaluationResult[1].result : "N/A";
+                judgeName1 = row.evaluationResult[0]? row.evaluationResult[0].judgeName : "N/A";      
+                judgeName2 = row.evaluationResult[1]? row.evaluationResult[1].judgeName : "N/A";
+              %> 
+
+              <tr>
+                <td><%= row.title %></td>
+                <td><%= row.authors_names %></td>
+                <% var journalName %> <% switch(row.journal_id){ case 1:
+              journalName = "Al-Meezan"; break; case 2: journalName =
+              "Al-Mithqal"; break; case 3: journalName = "Al-Mishkat"; break; }
+              %>
+                <td><%= journalName %></td>
+                <td> <p style="margin-bottom: 0px;" title="<%= judgeName1 %>"><%= judge1 %></p> </td>
+                <td><p style="margin-bottom: 0px;" title="<%= judgeName2 %>"><%= judge2 %></p> </td>
+                <td class="w-25">
+                  <form class="download_form" id="form1<%= row._id %>" action="api/editor/download/<%= row._id %> "
+                    method="GET">
+                    <a href="javascript:;" class="download"
+                      onclick="document.getElementById('form1<%= row._id %>').submit();"><i class="fa fa-download"
+                        data-toggle="tooltip" title="Download"></i></a>
+                  </form>
+
+                  <a href="#accept<%= row._id %>id" class="send" data-toggle="modal"><i
+                      class="fas fa-check text-success" data-toggle="modal" data-target="#Send"
+                      title="Accept"></i>
+                  </a>
+                  <a href="#secondReject<%= row._id %>id" class="delete" data-toggle="modal"><i class="fa fa-times"
+                      data-toggle="modal" title="Delete"></i></a>
+                </td>
+                <td style="display: none;"></td>
+              </tr>
+              <div class="modal fade" id="accept<%= row._id %>id">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <form action="/api/editor/accept/<%= row._id  %> " method="POST">
+                    <div class="modal-header">
+                      <h4 class="modal-title">Accept paper</h4>
+                      <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <h5>Are you sure you want accept the paper?</h5>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-success" >
+                        Accept
+                      </button>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Close
+                      </button>
+                    </div>
+                  </form>
+                  </div>
+                </div>
+              </div>
+              <div class="modal fade" id="secondReject<%= row._id %>id">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title">Reject paper</h4>
+                      <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <h5>Are you sure you want reject the paper?</h5>
+                      <form action="/api/editor/reject/<%= row._id  %> " method="POST">
+                        <div class="form-group">
+                          <label>Tell us the reason for rejecting the paper
+                            (required):
+                          </label>
+                          <textarea
+                          name="message"
+                          class="form-control"
+                          cols="20"
+                          rows="5"
+                          required
+                        ></textarea>
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-danger">
+                        Reject
+                      </button>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Close
+                      </button>
+                    </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <% })}else{ %>
+              <tr>
+                <td colspan="6">No Record Found</td>
+              </tr>
+              <% } %>
+            </tbody>
+           
+          </table>
+          </div>
+        </div>
+        <div id="page4" class="container tab-pane fade">
+          <br />
+          <div class="table-responsive">
+          <table class="table table-hover w-100 table4 text-center">
+            <thead>
+              <tr>
+                <th id=" ">Title</th>
+                <th id=" ">Submission Date</th>
+                <th id=" ">Acceptance Date</th>
+                <th id=" ">Authors</th>
+                <th id=" ">Journal</th>
+                <th id=" ">Evaluation result</th>
+                <th id=" ">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <%if (accepted.length>0){ %> <% accepted.forEach(function(row){ %>
+              <tr>
+                <td><%= row.title %></td>
+                <td><%= row.dateCreated.toString().slice(4,15); %></td>
+                <td><%= row.dateAccepted.toString().slice(4,15); %></td>
+                <td><%= row.authors_names %></td>
+                <% var journalName %> <% switch(row.journal_id){ case 1:
+              journalName = "Al-Meezan"; break; case 2: journalName =
+              "Al-Mithqal"; break; case 3: journalName = "Al-Mishkat"; break; }
+              %>
+                <td><%= journalName %></td>
+                <td>
+                  <%= (row.evaluationResult[0].result +  row.evaluationResult[1].result) / 2  %>/80
+                </td>
+               
+                <td >
+                  <form class="download_form" id="form1<%= row._id %>" action="api/editor/download/<%= row._id %> "
+                    method="GET">
+                    <a href="javascript:;" class="download"
+                      onclick="document.getElementById('form1<%= row._id %>').submit();"><i class="fa fa-download"
+                        data-toggle="tooltip" title="Download"></i></a>
+                  </form>
+                </td>
+              </tr>
+        
+              <% })}else{ %>
+              <tr>
+                <td colspan="7">No Record Found</td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+          </div>
+        </div>
+
+
+        <div id="page5" class="container tab-pane fade">
+          <br />
+          <div class="table-responsive">
+          <table class="table table-hover w-100 table5 text-center">
+            <thead>
+              <tr>
+                <th id=" ">Title</th>
+                <th id=" ">Submission Date</th>
+                <th id=" ">Reject Date</th>
+                <th id=" ">Authors</th>
+                <th id=" ">Reject count</th>
+                <th id=" ">Journal</th>
+                <th style="display: none;" id=""></th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <%if (rejected.length>0){ %> <% rejected.forEach(function(row){ %>
+              <tr>
+                <td><%= row.title %></td>
+                <td><%= row.dateCreated.toString().slice(4,15); %></td>
+                <td><%= row.dateRejected.toString().slice(4,15); %></td>
+                <td><%= row.authors_names %></td>
+                <td><%= row.rejectCount %></td>
+                <% var journalName %> <% switch(row.journal_id){ case 1:
+              journalName = "Al-Meezan"; break; case 2: journalName =
+              "Al-Mithqal"; break; case 3: journalName = "Al-Mishkat"; break; }
+              %>
+                <td><%= journalName %></td>
+                <td style="display: none;"></td>
+               
+               
+              </tr>
+        
+              <% })}else{ %>
+              <tr>
+                <td colspan="6">No Record Found</td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+          </div>
+        </div>
+        <div id="page6" class="container tab-pane fade">
+          <br />
+          <div class="table-responsive">
+          <table class="table table-hover w-100 table6 text-center">
+            <thead>
+              <tr>
+                <th id=" ">Title</th>
+                <th id=" ">Submission Date</th>
+                <th id=" ">Withdraw Date</th>
+                <th id=" ">Authors</th>
+                <th id=" ">Journal</th>
+                <th style="display: none;" id=""></th>
+                <th style="display: none;" id=""></th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <%if (withdrawn.length>0){ %> <% withdrawn.forEach(function(row){ %>
+              <tr>
+                <td><%= row.title %></td>
+                <td><%= row.dateCreated.toString().slice(4,15); %></td>
+                <td><%= row.dateWithdrawn.toString().slice(4,15); %></td>
+                <td><%= row.authors_names %></td>
+                <% var journalName %> <% switch(row.journal_id){ case 1:
+              journalName = "Al-Meezan"; break; case 2: journalName =
+              "Al-Mithqal"; break; case 3: journalName = "Al-Mishkat"; break; }
+              %>
+                <td><%= journalName %></td>
+                <td style="display: none;"></td>
+                <td style="display: none;"></td>
+               
+              </tr>
+        
+              <% })}else{ %>
+              <tr>
+                <td colspan="6">No Record Found</td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <script src="/js/javascript.js"></script>
+  <script>
+    $(document).ready(function () {
+      $('.table1').DataTable({
+        columns:[
+            { visible: true }, //col 1
+            { visible: true }, //col 2
+            { visible: true }, //col 3
+            { visible: true }, //col 4
+            { visible: true }, //col 5
+            { visible: true }, //col 6 
+            { visible: false }, //col 7
+            ]
+      });
+      $('.table2').DataTable({
+        columns:[
+            { visible: true }, //col 1
+            { visible: true }, //col 2
+            { visible: true }, //col 3
+            { visible: true }, //col 4
+            { visible: true }, //col 5
+            { visible: true }, //col 6 
+            { visible: true }, //col 7
+            ]
+      });
+      
+      
+      $('.table3').DataTable({
+        columns:[
+            { visible: true }, //col 1
+            { visible: true }, //col 2
+            { visible: true }, //col 3
+            { visible: true }, //col 4
+            { visible: true }, //col 5
+            { visible: true }, //col 6 
+            { visible: false }, //col 7
+            ]
+      });
+      $('.table4').DataTable({
+        columns:[
+            { visible: true }, //col 1
+            { visible: true }, //col 2
+            { visible: true }, //col 3
+            { visible: true }, //col 4
+            { visible: true }, //col 5
+            { visible: true }, //col 6 
+            { visible: true }, //col 7
+            ]
+      });
+      $('.table5').DataTable({
+        columns:[
+            { visible: true }, //col 1
+            { visible: true }, //col 2
+            { visible: true }, //col 3
+            { visible: true }, //col 4
+            { visible: true }, //col 5
+            { visible: true }, //col 6 
+            { visible: false }, //col 7
+            ]
+      });
+      $('.table6').DataTable({
+        columns:[
+            { visible: true }, //col 1
+            { visible: true }, //col 2
+            { visible: true }, //col 3
+            { visible: true }, //col 4
+            { visible: true }, //col 5
+            { visible: false }, //col 6 
+            { visible: false }, //col 7
+            ]
+      });
+      
+    });
+  </script>

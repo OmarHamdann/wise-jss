@@ -1,0 +1,30 @@
+<%- include("head-logout")%>
+<h2>Account Verification</h2>
+<%- include("partials/messages") %>
+<section class="clean-block">
+    <div class="page1">
+        <div class=""></div>
+        <div class=" Table-container  container clean-block">
+            <div class="head-justify-heigh">
+                <div class="card-wrapper" style="margin-top: 100px;">
+                    <div class="card ">
+                    </div>
+                    <div class="card fat">
+                        <div class="card-body">
+                            <h4 class="card-title">Verification</h4>
+                            <p>
+                                Please check your email inbox for the activation link. If you do not find
+                                the email, check your spam folder as well.
+                            </p>
+                            <p>You did not receive an email?</p>
+                            <form method="GET" action="/api/auth/verification/get-activation-email">
+                                <button class="btn btn-primary my-3">
+                                    Send New Activation Email
+                                </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+<%- include("footer")%>

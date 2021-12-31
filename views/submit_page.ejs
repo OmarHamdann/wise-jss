@@ -1,0 +1,217 @@
+<%- include("head-logout")-%>
+
+<section class="page1">
+  <div class="Table-container container height-justify">
+    <div class="page2">
+      <div class="card-wrapper-submit py-5">
+        <div class="card">
+          <div class="card-body">
+            <div class="text-center">
+              <h2>Submit Scientific Research</h2>
+              <%- include("partials/messages") %>
+              <h5 class="text-muted">Journal and Authors</h5>
+            </div>
+            <form
+              class="needs-validation"
+              method="POST"
+              action="/api/author/submit"
+              enctype="multipart/form-data"
+              novalidate
+            >
+              <div class="form-group email_seperate_by_comma">
+                <label for="emails">CO-Authors emails</label>
+                <input
+                  class="form-control"
+                  id="emails"
+                  type="text"
+                  name="authors"
+                  placeholder="Separate emails by comma"
+                />
+                <div class="invalid-feedback">invalid email</div>
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlSelect1">Journal Name</label>
+                <select
+                  class="form-control"
+                  id="exampleFormControlSelect1"
+                  name="journal_id"
+                  required
+                >
+                  <option value="" disabled selected>Select journal</option>
+                  <option value="1">Al-Meezan</option>
+                  <option value="2">Al-Mithqal</option>
+                  <option value="3">Al-Mishkat</option>
+                </select>
+              </div>
+              <div class="text-center">
+                <h5 class="text-muted">Title And Abstract</h5>
+              </div>
+              <div class="form-group">
+                <label>Title</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="title"
+                  placeholder="Title"
+                  required
+                />
+                <div class="invalid-feedback">Please choose a title.</div>
+              </div>
+              <div class="form-group">
+                <label>Abstract</label>
+                <textarea
+                  class="form-control"
+                  name="abstract"
+                  placeholder="Abstract"
+                  required
+                ></textarea>
+              </div>
+
+              <label>file upload</label>
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control input-file-dummy"
+                  placeholder="Choose file"
+                  aria-describedby="fileHelp"
+                  required
+                />
+                <div class="valid-feedback order-last">File is valid</div>
+                <div class="invalid-feedback order-last">File is required</div>
+                <label class="input-group-append mb-0">
+                  <span class="btn btn-primary input-file-btn">
+                    Browse… <input type="file" name="paper" hidden />
+                  </span>
+                </label>
+              </div>
+              <small id="fileHelp" class="form-text text-muted"
+                >Choose file (PDF/WORD)
+              </small>
+
+              <div class="form-group text-center">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="accepted"
+                    id="invalidCheck"
+                    required
+                  />
+                  <label class="form-check-label" for="invalidCheck">
+                    Agree to terms and conditions
+                  </label>
+                  <div class="invalid-feedback">
+                    You must agree before submitting.
+                  </div>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                class="btn btn-success btn-block"
+                name="submit"
+              >
+                submit
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        $(function () {
+          $('.input-file-dummy').each(function () {
+            $($(this).parent().find('.input-file-btn input')).on(
+              'change',
+              { dummy: this },
+              function (ev) {
+                $(ev.data.dummy)
+                  .val($(this).val().replace(/\\/g, '/').replace(/.*\//, ''))
+                  .trigger('focusout');
+              }
+            );
+            $(this)
+              .on('focusin', function () {
+                $(this).attr('readonly', '');
+              })
+              .on('focusout', function () {
+                $(this).removeAttr('readonly');
+              })
+              .on('click', function () {
+                $(this).parent().find('.input-file-btn').click();
+              });
+          });
+        });
+
+        (function () {
+          'use strict';
+          window.addEventListener(
+            'load',
+            function () {
+              // Fetch all the forms we want to apply custom Bootstrap validation styles to
+              var forms = document.getElementsByClassName('needs-validation');
+              // Loop over them and prevent submission
+              var validation = Array.prototype.filter.call(
+                forms,
+                function (form) {
+                  form.addEventListener(
+                    'submit',
+                    function (event) {
+                      if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                      }
+                      form.classList.add('was-validated');
+                    },
+                    false
+                  );
+                }
+              );
+            },
+            false
+          );
+        })();
+
+        $(document).ready(function () {
+          $('#emails').blur(function () {
+            validateMultipleEmails($('#emails').val());
+          });
+        });
+
+        function validateMultipleEmails(emailInput) {
+          // Get value on emails input as a string
+          var emails = emailInput;
+
+          // Split string by comma into an array
+          emails = emails.split(',');
+
+          var valid = true;
+          var regex =
+            /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+          var invalidEmails = [];
+
+          for (var i = 0; i < emails.length; i++) {
+            // Trim whitespaces from email address
+            emails[i] = emails[i].trim();
+
+            // Check email against our regex to determine if email is valid
+            if (emails[i] == '' || !regex.test(emails[i])) {
+              invalidEmails.push(emails[i]);
+            }
+          }
+
+          // Output invalid emails
+          $('.form-group .text-danger').remove();
+          if (invalidEmails != 0) {
+            $('.email_seperate_by_comma').append(
+              '<p class="text-danger">Invalid emails: ' +
+                invalidEmails.join(', ') +
+                '</p>'
+            );
+          }
+        }
+      </script>
+    </div>
+  </div>
+</section>

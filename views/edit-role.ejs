@@ -1,0 +1,143 @@
+<%- include("head-logout")-%>
+
+<section class="page1">
+  <div class="Table-container container height-justify">
+    <div class="page2">
+      <div class="card-wrapper-submit py-5">
+        <div class="card">
+          <div class="card-body">
+            <div class="text-center">
+              <h2>Edit User Role</h2>
+              <%- include("partials/messages") %>
+            </div>
+            <form
+              class="needs-validation"
+              method="POST"
+              action="/api/admin/changeRole/<%= user._id   %>"
+              novalidate
+            >
+              <div class="form-group">
+                <label>Name</label>
+                <input type="text" class="form-control" value="<%=
+                user.firstName + " " + user.lastName %> " disabled />
+                <div class="invalid-feedback">Please choose a title.</div>
+              </div>
+
+              <div class="form-group">
+                <label>email</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  value="<%=
+                user.email %> "
+                  disabled
+                />
+              </div>
+
+              <div class="form-group">
+                <label>Date Created</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  value="<%= user.dateCreated.toString().slice(4,15);
+                 %> "
+                  disabled
+                />
+              </div>
+              <div class="form-group">
+                <label>Current Role</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  value="<%= user.role
+                 %> "
+                  disabled
+                />
+              </div>
+
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="selectRole"
+                    >New Role</label
+                  >
+                </div>
+                <select
+                  class="custom-select"
+                  id="selectRole"
+                  name="newRole"
+                  required
+                >
+                  <option value="" disabled selected>Choose...</option>
+                  <option value="author">Author</option>
+                  <option value="editor">Editor</option>
+                  <option value="reviewer">Reviewer</option>
+                  <option value="judge">Judge</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+              <div class="input-group mb-3 show-select-journal">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="reviewerFor"
+                    >Journal</label
+                  >
+                </div>
+                <select
+                  class="custom-select"
+                  id="selectJournal"
+                  name="reviewerFor"
+                  required
+                >
+                  <option value="" disabled selected>Choose...</option>
+                  <option value="1">Al-Meezan</option>
+                  <option value="2">Al-Mithqal</option>
+                  <option value="3">Al-Mishkat</option>
+                </select>
+          </div>
+          <div class="input-group mb-3 show-select-journal-judge">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="judgeFor"
+                >Journal</label
+              >
+            </div>
+            <select
+              class="custom-select"
+              id="selectJournal"
+              name="judgeFor"
+              required
+            >
+              <option value="" disabled selected>Choose...</option>
+              <option value="1">Al-Meezan</option>
+              <option value="2">Al-Mithqal</option>
+              <option value="3">Al-Mishkat</option>
+            </select>
+          </div>
+          <button
+          type="submit"
+          class="btn btn-success btn-block"
+          name="submit"
+        >
+          submit
+        </button>
+      </form>
+        </div>
+      </div>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script>
+        $('.show-select-journal').hide();
+        $('.show-select-journal-judge').hide();
+        $('#selectRole').change(function () {
+          if ($(this).val() == 'reviewer') {
+            $('.show-select-journal').fadeIn();
+            $('.show-select-journal-judge').fadeOut();
+          } else if($(this).val() == 'judge'){
+            $('.show-select-journal-judge').fadeIn();
+            $('.show-select-journal').fadeOut();
+          } else {
+            $('.show-select-journal').fadeOut();
+            $('.show-select-journal-judge').fadeOut();
+          }
+        });
+      </script>
+    </div>
+  </div>
+</section>

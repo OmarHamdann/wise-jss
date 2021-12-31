@@ -1,0 +1,86 @@
+<%- include("head")-%>
+<div class=""></div>
+<section class="page1">
+  <div class=" Table-container container height-justify">
+    <div class="page2 SignUppage2">
+      <div class="card-wrapper">
+        <div class="card ">
+          <div class="card-body">
+            <h4 class="card-title">Register</h4>
+            <form class="form1" method="POST" action="/api/auth/register">
+              <%- include("partials/messages") %>
+              <div class="form-group">
+                <label for="first_name">First Name</label>
+                <input id="first_name" type="text" class="form-control" name="firstName" required autofocus />
+              </div>
+              <div class="form-group">
+                <label for="last_name">Last Name</label>
+                <input id="last_name" type="text" class="form-control" name="lastName" required autofocus />
+              </div>
+              <div class="form-group">
+                <label for="email">E-Mail Address</label>
+                <input id="email" type="email" class="form-control" name="email" required />
+              </div>
+              <div class="form-group position-relative">
+                <label for="password">Password</label>
+                <input id="password" type="password" class="form-control input" name="password" required data-eye
+                data-toggle="tooltip" data-html="true" data-placement="left" aria-describedby="passHelp" title="The password must be:
+                <ul>
+                  <li>at least 6 characters long</li>
+                  <li>contain a lowercase letter</li>
+                  <li>contain a uppercase letter</li>
+                  <li>contain a numeric digit</li>
+                  <li>Contains a special character</li>
+                </ul>"
+                  onkeyup="trigger()" />
+                  <script>
+                    $(function () {
+                      $('[data-toggle="tooltip"]').tooltip()
+                    })
+                    </script>
+                <span toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+              </div>
+              <div class="indicator">
+                <span class="weak"></span>
+                <span class="medium"></span>
+                <span class="strong"></span>
+              </div>
+              <div class="text">
+              </div>
+              <div class="form-group position-relative">
+                <label for="repeat_password">Repeat Password</label>
+                <input id="repeat_password" type="password" class="form-control" name="password2" required data-eye 
+                data-toggle="tooltip" data-html="true" data-placement="left" aria-describedby="passHelp" title="The password must be:
+                <ul>
+                  <li>at least 6 characters long</li>
+                  <li>contain a lowercase letter</li>
+                  <li>contain a uppercase letter</li>
+                  <li>contain a numeric digit</li>
+                  <li>Contains a special character</li>
+                </ul>"/>
+                <span toggle="#repeat_password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+              </div>
+              <div class="form-group">
+                <label>
+                  <input type="checkbox" name="acceptance" value="accepted" required /> I agree
+                  to the Terms and Conditions
+                </label>
+              </div>
+              <div class="form-group no-margin">
+                <button type="submit" class="btn btn-primary btn-block">
+                  Register
+                </button>
+              </div>
+              <div class="margin-top20 text-center">
+                Already have an account? <a href="/">Login</a>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+</section>
+
+
+<%- include("footer")%>
+<%- include("end")-%>

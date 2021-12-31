@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Wise JSS</title>
+  <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css" />
+  <!--Admin table css-->
+
+  <link rel="stylesheet" type="text/css"
+    href="https://cdn.datatables.net/v/bs4/dt-1.10.25/r-2.2.9/datatables.min.css" />
+
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i" />
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css" />
+  <link rel="stylesheet" type="text/css" href="/css/Login-screen.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <script src="https://kit.fontawesome.com/3f3f9dd447.js" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="shortcut icon" href="https://www.wise.edu.jo/sites/all/themes/wisenew/favicon.ico"
+    type="image/vnd.microsoft.icon">
+</head>
+
+<body>
+
+  <body class="my-login-page">
+    <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
+      <div class="container">
+        <a class="navbar-brand logo" href="/">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/en/thumb/4/47/WISE_University_logo.gif/190px-WISE_University_logo.gif"
+            style="height: 47px;" alt="logo"> Wise - Jss</a>
+        <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1">
+          <span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navcol-1">
+          <ul class="nav navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="about">About Us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contact-us">Contact Us</a>
+            </li>
+            <li class="nav-item">
+              <form action="/api/auth/logout" method="get">
+                <button name="logout" type="submit" class="btn btn-outline-primary">logout</button>
+              </form>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </body>
+
+</html>

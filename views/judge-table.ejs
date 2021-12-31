@@ -1,0 +1,71 @@
+<div class="page1">
+    <div class=" Table-container container">
+        <div class="table-wrapper card">
+            <div class="text-center my-3">
+                <h2>Judge dashboard</h2>
+            </div>
+            <%- include("partials/messages") %>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#page2">Evaluate</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="page1" class="container tab-pane active">
+                    <br />
+                    <div class="table-responsive">
+                    <table class="table table-hover w-100 example text-center">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Submission Date</th>
+                                <th>Authors</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%if (paper.length>0){ %> <% paper.forEach(function(row){ %>
+                            <tr>
+                                <td><%= row.title %></td>
+                                <td><%= row.dateCreated.toString().slice(4,15); %></td>
+                                <td><%= row.authors_names %></td>
+
+
+                                <td style="width: 30%">
+                                    <form class="download_form" id="form1<%= row._id %>"
+                                        action="api/judge/download/<%= row._id %>" method="GET">
+                                        <a href="javascript:;" class="download"
+                                        onclick="document.getElementById('form1<%= row._id %>').submit();"><i class="fa fa-download"
+                                          data-toggle="tooltip" title="Download"></i></a>
+                                           
+                                    </form>
+
+                                    <a href="/evaluate/<%= row._id %>"
+                                        class=""><i
+                                        class="fas fa-clipboard-list text-success" data-toggle="modal" data-target="#Send"
+                                        title="Evaluate"></i></a>
+                                        
+                                </td>
+                            </tr>
+
+                            <% })}else{ %>
+                            <tr>
+                                <td colspan="6">No Record Found</td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- ***************************************************************** -->
+<script src="/js/javascript.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.example').DataTable();
+    });
+</script>

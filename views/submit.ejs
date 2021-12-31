@@ -1,0 +1,54 @@
+<form id="msform" method="POST" action="/api/author/submit" enctype="multipart/form-data">
+        <div class="modal-header">
+                <h2 class="modal-title">Add Scientific Research</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                &times;
+                        </button>
+        </div>
+        <ul id="progressbar" style="display:flex;">
+                <li class="active">Magazine and Authors</li>
+                <li>Title and Abstract</li>
+                <li>File Upload</li>
+                <li>submit</li>
+        </ul>
+        <fieldset>
+                <h2 class="fs-title">Magazine and Authors</h2>
+                <label for="nam">CO-Authors emails </label>
+                <input id="nam" type="text" name="authors" placeholder="Authors" />
+                <div class="form-group">
+                        <label for="exampleFormControlSelect1">Journal Name</label>
+                        <select class="form-control" id="exampleFormControlSelect1" name="journal_id">
+                                <option value="1">Al-Meezan</option>
+                                <option value="2">Al-Mithqal</option>
+                                <option value="3">Al-Mishkat</option>
+                        </select>
+                </div>
+                <input type="button" name="next" class="next action-button" value="Next" />
+        </fieldset>
+        <fieldset>
+                <h2 class="fs-title">Title And Abstract</h2>
+                <input type="text" name="title" placeholder="Title" />
+                <textarea name="abstract" placeholder="Abstract"></textarea>
+
+                <input type="button" name="previous" class="previous action-button" value="Previous" />
+                <input type="button" name="next" class="next action-button" value="Next" />
+        </fieldset>
+        <fieldset>
+                <h2 class="fs-title">File Upload</h2>
+                <div class="form-group">
+                        <label for="exampleFormControlFile1">File Upload</label>
+                        <input type="file" name="paper" class="form-control-file" id="exampleFormControlFile1"  />
+                </div>
+                <input type="button" name="previous" class="previous action-button" value="Previous" />
+                <input type="button" name="next" class="next action-button" value="Next" />
+        </fieldset>
+        <fieldset>
+                <h1 class="fs-title">everything is okay</h2>
+                        <img style="padding: 10px;" src="http://www.clker.com/cliparts/o/2/i/N/k/o/true.svg.med.png">
+                        <h2 class="fs-title">all of data are uploaded successfully</h2>
+                        <input type="submit" class="action-button" name="submit" value="submit" />
+        </fieldset>
+        <div class="modal-footer">
+                <input type="button" class="btn btn-danger" data-dismiss="modal" value="Cancel" onclick="window.location.reload()" />
+        </div>
+</form>

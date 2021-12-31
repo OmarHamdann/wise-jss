@@ -1,0 +1,45 @@
+<%- include("head")%>
+<section class="page1">
+        <div class=" Table-container container height-justify">
+                <div class="page2 SignUppage2 ">
+                        <div class="card-wrapper">
+                                <div class="card ">
+                                        <div class="card-body">
+                                                <h4 class="card-title">Contact Us</h4>
+                                                <form method="POST" action="/api/user/contact-us/send">
+                                                        <%- include("partials/messages") %>
+                                                        <div class="form-group">
+                                                                <label>Name</label><input class="form-control"
+                                                                        type="text" name="name" />
+                                                        </div>
+
+
+
+
+                                                        <div class="form-group">
+                                                                <label>Subject</label><input class="form-control"
+                                                                        type="text" name="subject" />
+                                                        </div>
+                                                        <div class="form-group">
+                                                                <label>Email</label><input class="form-control"
+                                                                        type="email" name="email" />
+                                                        </div>
+                                                        <div class="form-group">
+                                                                <label>Message</label><textarea class="form-control"
+                                                                        name="message"></textarea>
+                                                        </div>
+                                                        <div class="form-group">
+                                                                <button class="btn btn-primary btn-block" type="submit">
+                                                                        Send
+                                                                </button>
+                                                        </div>
+
+                                                </form>
+                                        </div>
+
+                                </div>
+                        </div>
+</section>
+
+<%- include("end")%>
+<%- include("footer")%>

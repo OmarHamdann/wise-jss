@@ -1,0 +1,146 @@
+<%- include("head-logout")-%>
+
+<section class="page1">
+  <div class="Table-container container height-justify">
+    <div class="page2">
+      <div class="card-wrapper-submit py-5">
+        <div class="card">
+          <div class="card-body">
+            <div class="text-center">
+              <h2>Edit Scientific Research</h2>
+              <%- include("partials/messages") %>
+            </div>
+            <form
+              class="needs-validation"
+              method="POST"
+              action="/api/author/edit/<%= paperId  %>"
+              enctype="multipart/form-data"
+              novalidate
+            >
+              <div class="form-group">
+                <label>Title</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="title"
+                  placeholder="Title"
+                />
+                <div class="invalid-feedback">Please choose a title.</div>
+              </div>
+              <div class="form-group">
+                <label>Abstract</label>
+                <textarea
+                  class="form-control"
+                  name="abstract"
+                  placeholder="Abstract"
+                ></textarea>
+              </div>
+
+              <label>file upload</label>
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control input-file-dummy"
+                  placeholder="Choose file"
+                  aria-describedby="fileHelp"
+                  required
+                />
+                <div class="valid-feedback order-last">File is valid</div>
+                <div class="invalid-feedback order-last">File is required</div>
+                <label class="input-group-append mb-0">
+                  <span class="btn btn-primary input-file-btn">
+                    Browse… <input type="file" name="paper" hidden />
+                  </span>
+                </label>
+              </div>
+              <small id="fileHelp" class="form-text text-muted"
+                >Choose file (PDF/WORD)
+              </small>
+
+              <div class="form-group text-center">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="accepted"
+                    id="invalidCheck"
+                    required
+                  />
+                  <label class="form-check-label" for="invalidCheck">
+                    Agree to terms and conditions
+                  </label>
+                  <div class="invalid-feedback">
+                    You must agree before submitting.
+                  </div>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                class="btn btn-success btn-block"
+                name="submit"
+              >
+                submit
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        $(function () {
+          $('.input-file-dummy').each(function () {
+            $($(this).parent().find('.input-file-btn input')).on(
+              'change',
+              { dummy: this },
+              function (ev) {
+                $(ev.data.dummy)
+                  .val($(this).val().replace(/\\/g, '/').replace(/.*\//, ''))
+                  .trigger('focusout');
+              }
+            );
+            $(this)
+              .on('focusin', function () {
+                $(this).attr('readonly', '');
+              })
+              .on('focusout', function () {
+                $(this).removeAttr('readonly');
+              })
+              .on('click', function () {
+                $(this).parent().find('.input-file-btn').click();
+              });
+          });
+        });
+
+        (function () {
+          'use strict';
+          window.addEventListener(
+            'load',
+            function () {
+              // Fetch all the forms we want to apply custom Bootstrap validation styles to
+              var forms = document.getElementsByClassName('needs-validation');
+              // Loop over them and prevent submission
+              var validation = Array.prototype.filter.call(
+                forms,
+                function (form) {
+                  form.addEventListener(
+                    'submit',
+                    function (event) {
+                      if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                      }
+                      form.classList.add('was-validated');
+                    },
+                    false
+                  );
+                }
+              );
+            },
+            false
+          );
+        })();
+      </script>
+    </div>
+  </div>
+</section>
